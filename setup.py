@@ -135,6 +135,9 @@ setup(
         'pandas>=1.3.0',
         'requests>=2.31',
         'openpyxl>=3.1.2',  # parse excel files
+        'pyrate-limiter>=2.10.0',
+        'requests-cache>=1.1.0',
+        'requests_ratelimiter>=0.4.1'
     ],
 
     # List additional groups of dependencies here (e.g. development

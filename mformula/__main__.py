@@ -20,10 +20,9 @@ def main():
     
     # global flags
     parser.add_argument("-x", "--exchange", metavar='EXCG', default="tsx", choices=('tsx', 'nyse'), help="the marketplace/exchange acronym")
-    parser.set_defaults()
+    parser.set_defaults(func=None)
     commands = parser.add_subparsers(help='The sub-command to invoke', metavar='CMD', dest='command')
-
-    parser.set_defaults(func=None)    
+ 
     symbols.configure_parsers(commands)
     scrapers.configure_parsers(commands)
     args = parser.parse_args()

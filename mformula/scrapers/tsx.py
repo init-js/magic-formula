@@ -7,7 +7,7 @@ import requests
 import pandas as pd
 import os.path
 
-from .errors import ScraperError
+from ..errors import ScraperError
 from ..utils import create_data_point_dir
 
 """
@@ -48,7 +48,8 @@ def toronto_date(date_stamp):
     return closing_datetime.astimezone(pytz.utc)
 
 
-def cmd_show_issuers():
+def cmd_write_symbols():
+    """fills market-data directory with list of tsx/tsxv symbols"""
     log.info("downloading %s", MARKET_STATS_URL)
     r = requests.get(MARKET_STATS_URL)
     
