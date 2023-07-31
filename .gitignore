@@ -2,3 +2,4 @@
 *.code-workspace
 .venv
 *.egg-info
+.vscode

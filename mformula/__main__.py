@@ -2,6 +2,7 @@ import logging
 
 from . import setup_logging
 from . import symbols
+from . import scrapers
 import argparse
 
 """
@@ -9,6 +10,7 @@ Analyzes stock data on different markets and provides company rankings according
 to the magic formula from Joel Greenblatt.
 """
 log = logging.getLogger(__package__)
+
 
 def main():
     setup_logging(logging.DEBUG)
@@ -23,6 +25,7 @@ def main():
 
     parser.set_defaults(func=None)    
     symbols.configure_parsers(commands)
+    scrapers.configure_parsers(commands)
     args = parser.parse_args()
 
     if args.command is None:
@@ -37,6 +40,7 @@ def main():
 
     retcode = args.func(**vars(args))
     return retcode if retcode is not None else 0
+
 
 if __name__ == "__main__":
     # user ran `python3 -m mformula``

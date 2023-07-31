@@ -132,7 +132,10 @@ setup(
     # in the AWS runtime.
     install_requires=[
         'yfinance>=0.2',
-        'pandas>=1.3.0'              ],  # Optional
+        'pandas>=1.3.0',
+        'requests>=2.31',
+        'openpyxl>=3.1.2',  # parse excel files
+    ],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
@@ -143,10 +146,10 @@ setup(
     # Similar to `install_requires` above, these must be valid existing
     # projects.
     extras_require={  # Optional
-        'dev': ['pylint', 'flake8'],
-        'lambda': ['requests',
-                   'boto3==1.9.35'],
-        'build': []
+        'dev': [
+            'pylint',
+            'flake8',
+            'pytest>=7.4.0'],
     },
 
     # If there are data files included in your packages that need to be
@@ -169,7 +172,7 @@ setup(
     # http://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files
     #
     # In this case, 'data_file' will be installed into '<sys.prefix>/my_data'
-    #data_files=[('my_data', ['data/_placeholder_'])],  # Optional
+    # data_files=[('my_data', ['data/_placeholder_'])],  # Optional
 
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
