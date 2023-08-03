@@ -21,6 +21,14 @@ TSX_SHEET_NAME_RE = re.compile(r"^(TSXV?) Issuers ([^\s]+) (\d\d\d\d)$")
 
 TORONTO_TZ = pytz.timezone('America/Toronto')
 
+# Remove "NA" from the default NaN values, and anything else that could be
+# a stock symbol. "NA" is National Bank!
+NA_VALUES = ("#N/A", "#N/A N/A", "#NA", "-1.#IND", "-1.#QNAN",
+             "-NaN", "-nan", "1.#IND", "1.#QNAN", "<NA>",
+             "N/A", "NaN", "None", "n/a", "nan", "null",
+             # "NA", "NULL"
+             )
+
 log = logging.getLogger(__package__)
 
 
@@ -52,7 +60,7 @@ def cmd_write_symbols():
     """fills market-data directory with list of tsx/tsxv symbols"""
     log.info("downloading %s", MARKET_STATS_URL)
     r = requests.get(MARKET_STATS_URL)
-    
+
     for hdr, val in r.headers.items():
         log.debug("resp %s: %s", hdr, val)
 
@@ -84,7 +92,7 @@ def cmd_write_symbols():
             log.debug("exchange %s %s %s", exchange_name, year, month)
 
             df: pd.DataFrame
-            df = xl.parse(sheet_name, header=9, index_col="Root\nTicker")
+            df = xl.parse(sheet_name, header=9, index_col="Root\nTicker", na_values=NA_VALUES, keep_default_na=False)
             df.sort_index(inplace=True)
             # The market cap column holds the timestamp
             mcap = [c for c in df.columns if c.startswith("Market Cap (C$)")]
@@ -101,6 +109,7 @@ def cmd_write_symbols():
                        .replace("\n", " ")
                        .replace("-", "_")
                        .replace("(C$)", "")
+                       .replace("/", "")  # "O/S Shares" is outstanding shares
                        .strip())
                 col = re.sub(r"\s+", "_", col)
                 col = re.sub(r"_+", "_", col)
