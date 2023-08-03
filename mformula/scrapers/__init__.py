@@ -6,6 +6,11 @@ def cmd_scrape_market(exchange=None, **kwargs):
     tsx.cmd_write_symbols()
 
 
+def cmd_scrape_yahoo(exchange=None, from_symbol="", to_symbol="", **kwargs):
+    from . import company_stats
+    company_stats.refresh_all_companies(exchange, symbol_range=(from_symbol, to_symbol))
+
+
 def cmd_show_ticker(exchange=None, symbol=None, **kwargs):
     from . import finance
     if exchange == "tsx":
@@ -35,6 +40,13 @@ def configure_parsers(main_parsers):
 
     symbols_cmd = sub_scrapers.add_parser("symbols", help="retrieve list of symbols and save to market-data")
     symbols_cmd.set_defaults(func=cmd_scrape_market)
+
+    company_cmd = sub_scrapers.add_parser("company", help="update company financials and save to market-data")
+    company_cmd.set_defaults(func=cmd_scrape_yahoo)
+    company_cmd.add_argument("--from", metavar="SYM", dest="from_symbol", type=str,
+                             help="only process symbol names less-than-or-equal to SYM (in lexicographical order)")
+    company_cmd.add_argument("--to", metavar="SYM", dest="to_symbol", type=str,
+                             help="only process symbol names greater-than-or-equal-to SYM (in lexicographical order)")
 
     parser = main_parsers.add_parser("ticker",
                                      help="show ticker data",

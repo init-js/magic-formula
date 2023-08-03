@@ -131,13 +131,20 @@ setup(
     # We do have dependencies, like boto3, but they are included by default
     # in the AWS runtime.
     install_requires=[
-        'yfinance>=0.2',
         'pandas>=1.3.0',
         'requests>=2.31',
         'openpyxl>=3.1.2',  # parse excel files
         'pyrate-limiter>=2.10.0',
         'requests-cache>=1.1.0',
-        'requests_ratelimiter>=0.4.1'
+        'requests_ratelimiter>=0.4.1',
+
+        # pip > v18 can understand this syntax (https://www.python.org/dev/peps/pep-0508/)
+        'yfinance @ git+https://github.com/init-js/yfinance@main'
+    ],
+
+    # if you run via setup.py (not pip) you need this preamble
+    dependency_links=[
+        'https://github.com/init-js/yfinance@main#egg=yfinance-0.2.27'
     ],
 
     # List additional groups of dependencies here (e.g. development
